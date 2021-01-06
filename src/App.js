@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {TaskRow} from './components/TaskRow'
+import {TaskBanner} from './components/TaskBanner'
 
 const App = (props) => {
 
@@ -19,6 +20,7 @@ const App = (props) => {
 
   return (
     <div>
+      <TaskBanner userName={userName} taskItems={taskItems} />
      <table>
       <thead>
         <tr>
