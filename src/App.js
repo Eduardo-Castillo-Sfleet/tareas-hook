@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import {TaskRow} from './components/TaskRow'
 import {TaskBanner} from './components/TaskBanner'
 import { TaskCreator } from "./components/TaskCreator";
@@ -14,6 +14,26 @@ const App = (props) => {
     {key: 3, nombre: 'Tarea 4', done: true},
   ])
   const [showCompleted, setShowCompleted] = useState(true)
+
+  useEffect(() => {
+    let data = localStorage.getItem('tasks');
+    if(data != null){
+      setTaskItems(JSON.parse(data))
+    } else {
+      setUserName('Armando')
+      setTaskItems([
+        {key: 0, nombre: 'Tarea 1 L', done: false},
+        {key: 1, nombre: 'Tarea 2 L', done: true},
+        {key: 2, nombre: 'Tarea 3 L', done: false},
+        {key: 3, nombre: 'Tarea 4 L', done: true},
+      ])
+      setShowCompleted(true)
+    }
+  }, [])
+
+  useEffect(() => {
+    localStorage.setItem('tasks', JSON.stringify(taskItems))
+  }, [taskItems])
 
   const toggleTask = task => setTaskItems(taskItems.map(t => (t.key === task.key ? {...t, done: !t.done} : t)))
 
