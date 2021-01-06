@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {TaskRow} from './components/TaskRow'
 import {TaskBanner} from './components/TaskBanner'
 import { TaskCreator } from "./components/TaskCreator";
-
+import { TaskDone } from "./components/TaskDone";
 
 const App = (props) => {
 
@@ -13,10 +13,11 @@ const App = (props) => {
     {key: 2, nombre: 'Tarea 3', done: false},
     {key: 3, nombre: 'Tarea 4', done: true},
   ])
+  const [showCompleted, setShowCompleted] = useState(true)
 
   const toggleTask = task => setTaskItems(taskItems.map(t => (t.key === task.key ? {...t, done: !t.done} : t)))
 
-  const pintarTasks = () => taskItems.map(task => (
+  const pintarTasks = (doneValue) => taskItems.filter(task => task.done === doneValue).map(task => (
       <TaskRow task={task} key={task.key} toggleTask={toggleTask}></TaskRow>
   ))
 
@@ -41,9 +42,25 @@ const App = (props) => {
         </tr>
       </thead>
       <tbody>
-        {pintarTasks()}
+        {pintarTasks(false)}
       </tbody>
     </table>
+    <TaskDone callback={checked => setShowCompleted(checked)}/>
+
+    {showCompleted && (
+      <table>
+        <thead>
+          <tr>
+            <th>Description</th>
+            <th>Done</th>
+          </tr>
+        </thead>
+        <tbody>
+          {pintarTasks(true)}
+        </tbody>
+      </table>
+    )}
+
     <TaskCreator callback={createNewTask}/>
     </div>
   );
