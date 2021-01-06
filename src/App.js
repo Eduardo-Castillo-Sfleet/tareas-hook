@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
 import {TaskRow} from './components/TaskRow'
 import {TaskBanner} from './components/TaskBanner'
+import { TaskCreator } from "./components/TaskCreator";
+
 
 const App = (props) => {
 
@@ -16,7 +18,17 @@ const App = (props) => {
 
   const pintarTasks = () => taskItems.map(task => (
       <TaskRow task={task} key={task.key} toggleTask={toggleTask}></TaskRow>
-    ))
+  ))
+
+  const createNewTask = taskName => {
+    if (!taskItems.find(t => t.nombre === taskName)){
+      setTaskItems([...taskItems, {
+        key: taskItems.length,
+        nombre: taskName,
+        done: false
+      }])
+    }
+  }
 
   return (
     <div>
@@ -32,6 +44,7 @@ const App = (props) => {
         {pintarTasks()}
       </tbody>
     </table>
+    <TaskCreator callback={createNewTask}/>
     </div>
   );
 }
